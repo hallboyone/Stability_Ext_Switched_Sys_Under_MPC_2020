@@ -13,15 +13,18 @@ end
 
 %For each fragment
 for f=1:numel(fragments)
+    %Get the H and b that define the polyhedra Hx < b
     H = fragments(f).H(:, 1:end-1);
     b = fragments(f).H(:,end);
     
+    %Get the quadratic weight of the upper bound in the current fragment
     M = costSet{f};
-    %At each point in the mesh
+    
+    %At each point in the mesh that has not been examined already and is in
+    %the wedge
     for i = 1:mesh.numPoints
         if isnan(err_UB(i))
             x = X_vals(:,i);
-            %If it is in
             if(all(H*x<b))
                 err_UB(i) = (x'*M*x - trueCost(i))/trueCost(i);
                 if(err_UB(i) < -10e-8)

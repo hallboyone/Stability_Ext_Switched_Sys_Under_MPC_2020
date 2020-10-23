@@ -18,11 +18,9 @@ for mode=1:numel(m)
         idx = c.Valid{mode}(i);
         x = X_vals(:,idx);
         u = c.Inputs{mode}(:,idx);
-%         u = cell2mat( m(mode).MPC_Cntrl(x));
-%         u = u(:,1);
         gamma(mode) = min(gamma(mode), (x'*Q*x + u'*R*u)/(c.True{mode}(idx)), 'omitnan');
-        if ops.DEBUG
-            if(norm(x,2) > 10e-2)
+        if ops.DEBUG 
+            if(norm(x,2) > 0.01)
                 if(1-gamma(mode) < m(mode).MPCCost(A*x+B*u)/c.True{mode}(idx))
                     disp(-1+gamma(mode) + m(mode).MPCCost(A*x+B*u)/c.True{mode}(idx))
                 end
