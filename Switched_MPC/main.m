@@ -3,8 +3,9 @@
 % Set Run_* to 0 or 1 to either skip or run the indicated script. The dim and
 % version fields are used to select the correct script with the name
 % modes_[dim]_[ver].m which loads the modes into the workspace. 
-tic;
-%Input program parameters. Indicate which UB to calculate
+% USED IN PUBLISHED PAPER - modes_2_4.m and modes_3_1.m
+
+%Input program parameters.
 options = struct(...
     'Run_Cost_True',           1,...
     'Run_Cost_Fragments',      1,... 
@@ -42,17 +43,15 @@ S_cost = struct;
 [m, c] = buildModes(options);
 
 %% Run Active Scripts
-% Call various functions to run aleye(2)gorithms related to switched MPC on the
+% Call various functions to run algorithms related to switched MPC on the
 % modes using the program options
-
+tic;
 if(options.Run_Cost_True)
-    [gamma.True, S_cost.True] =...
-        TrueParameters(c, m, options);
+    [gamma.True, S_cost.True] = TrueParameters(c, m, options);
 end
 
 if(options.Run_Cost_Fragments)
-    [c.Fragments, gamma.Fragments, S_cost.Fragments] =...
-        FragmentsUB(c, m, options);
+    [c.Fragments, gamma.Fragments, S_cost.Fragments] = FragmentsUB(c, m, options);
 end
 
 if options.Run_Zhang_Zhuagn_Braatz
@@ -63,6 +62,7 @@ if options.Run_Sandbox
     sandbox(c, m, options);
 end
 toc
+
 %% Helper Functions for Setup
 % Helper functions used to set depended option values and check that values
 % are valid. 

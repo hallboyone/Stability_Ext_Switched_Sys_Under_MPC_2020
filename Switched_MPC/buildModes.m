@@ -17,9 +17,10 @@ m = 0;
 if(ops.run_timer)
     tic;
 end
+
 %Load the basic mode data as sysMode objects
-modeSet = str2func("modes_"+dim+"_"+ops.version);
-modeSet();
+loadModeData = str2func("modes_"+dim+"_"+ops.version);
+loadModeData();
 
 %% LOAD SAVED MODE DATA
 %Flags for if the mode needs to be rebuilt (i.e. if something changed)
